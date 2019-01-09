@@ -1,0 +1,19 @@
+version: '3'
+services:
+  app:
+    image: 7.2.13-cli-alpine3.8
+    volumes:
+      - index.php:index.php
+  scheduler:
+    build: app
+    volumes:
+      - .env:/var/www/html/.env
+      - ${SRC_DIR}:/var/www/html
+    entrypoint:
+      - "crond"
+      - "-f"
+      - "-l"
+      - "8"
+    restart: always
+  redis:
+    image: redis
